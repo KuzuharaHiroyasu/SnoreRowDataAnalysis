@@ -105,6 +105,7 @@ int main()
 	double tmpsnore = (double)snore_;
 	debug_out("snore_", &tmpsnore, 1, path_);
 
+	free(ptest1);
 	fclose(fp);
 }
 
