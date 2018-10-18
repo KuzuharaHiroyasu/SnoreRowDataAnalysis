@@ -13,7 +13,8 @@
 /* マクロ													*/
 /************************************************************/
 // 生データ補正
-#define APNEA_PARAM_RAW			20000.0f
+//#define APNEA_PARAM_RAW			20000.0f
+#define APNEA_PARAM_RAW					1.0f
 
 // 移動平均データ数
 #define APNEA_PARAM_AVE_NUM				5
