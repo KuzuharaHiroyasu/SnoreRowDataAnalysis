@@ -40,7 +40,7 @@ int		snore_ = SNORE_OFF;		// いびき
 
 static B	SnoreTime_[RIREKI] = { -1, -1, -1 };
 static UB	SnoreFlg_ = OFF; // ONカウント中 or OFFカウント中
-static UB	SnoreCnt_ = 0; // ON連続回数, OFF連続回数 兼用
+static int	SnoreCnt_ = 0; // ON連続回数, OFF連続回数 兼用
 
 /*==============================================================================*/
 /*	プロトタイプ宣言															*/
