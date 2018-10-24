@@ -38,9 +38,9 @@ char	tempPath_[BUF_SIZE] = { '\0' };
 int		len = CalcDataNumApnea;
 int		snore_ = SNORE_OFF;		// いびき
 
-static B	SnoreTime_[RIREKI];
-static UB	SnoreFlg_; // ONカウント中 or OFFカウント中
-static UB	SnoreCnt_; // ON連続回数, OFF連続回数 兼用
+static B	SnoreTime_[RIREKI] = { -1, -1, -1 };
+static UB	SnoreFlg_ = OFF; // ONカウント中 or OFFカウント中
+static UB	SnoreCnt_ = 0; // ON連続回数, OFF連続回数 兼用
 
 /*==============================================================================*/
 /*	プロトタイプ宣言															*/
@@ -107,7 +107,7 @@ int main()
 		}
 
 		//初期化
-		calc_snore_init();
+//		calc_snore_init();
 		strcpy_s(tempPath_, sizeof tempPath_, path_);
 		strcat_s(tempPath_, sizeof tempPath_, str);
 		_mkdir(tempPath_);
