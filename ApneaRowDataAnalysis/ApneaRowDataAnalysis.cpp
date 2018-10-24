@@ -33,6 +33,7 @@ double  raw_[DATA_SIZE];
 double	dc_[DATA_SIZE];
 int		temp_int_buf0[BUF_SIZE];
 char    path_[BUF_SIZE] = "C:/ax/apnea/";
+char	tempPath_[BUF_SIZE] = { '\0' };
 
 int		len = CalcDataNumApnea;
 int		snore_ = SNORE_OFF;		// Ç¢Ç—Ç´
@@ -65,7 +66,6 @@ int main()
 	char folder[BUF_SIZE] = { '\0' };
 	char dataPath[BUF_SIZE] = { '\0' };
 	char str[BUF_SIZE] = { '\0' };
-	char tempPath_[BUF_SIZE] = { '\0' };
 	time_t timer = 0;
 	int i, ii = 0;
 
@@ -108,15 +108,14 @@ int main()
 
 		//èâä˙âª
 		calc_snore_init();
+		strcpy_s(tempPath_, sizeof tempPath_, path_);
+		strcat_s(tempPath_, sizeof tempPath_, str);
+		_mkdir(tempPath_);
 
 		getwav_snore(raw_, len, APNEA_PARAM_SNORE);
 
 		double tmpsnore = (double)snore_;
-
-		strcpy_s(tempPath_, sizeof tempPath_, path_);
-		strcat_s(tempPath_, sizeof tempPath_, str);
-
-		_mkdir(tempPath_);
+		
 		debug_out("snore_", &tmpsnore, 1, tempPath_);
 
 		fclose(fp);
@@ -179,7 +178,7 @@ void getwav_snore(const double* pData, int DSize, double Param)
 			}
 		}
 	}
-//	debug_out_int("snore_Thre", temp_int_buf0, loop, path_);
+	debug_out_int("snore_Thre", temp_int_buf0, loop, tempPath_);
 
 	while (pos < loop) {
 		switch (SnoreFlg_) {
