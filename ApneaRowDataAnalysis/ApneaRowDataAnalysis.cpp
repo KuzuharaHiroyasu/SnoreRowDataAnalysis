@@ -24,6 +24,7 @@
 #define BUF_SIZE				256
 #define RIREKI					3
 #define CalcDataNumApnea		200
+#define LOOP_CNT				65536
 
 /*==============================================================================*/
 /*	グローバル変数																*/
@@ -81,8 +82,8 @@ int main()
 		_mkdir(path_);
 	}
 
-	//データフォルダあるだけループ(暫定で2000)
-	for (ii = 0; ii < 2000; ii++)
+	//データフォルダあるだけループ
+	for (ii = 0; ii < LOOP_CNT; ii++)
 	{
 		strcpy_s(dataPath, sizeof dataPath, ".");
 		sprintf_s(str, BUF_SIZE, "/%d/", ii);
