@@ -23,6 +23,8 @@
 #define DATA_SIZE				200	// 10秒間、50msに1回データ取得した数
 #define BUF_SIZE				256
 #define RIREKI					3
+#define CalcDataNumApnea		200
+#define LOOP_CNT				65536
 
 /*==============================================================================*/
 /*	グローバル変数																*/
@@ -30,16 +32,16 @@
 double	pdata[BUF_SIZE];
 double  raw_[DATA_SIZE];
 double	dc_[DATA_SIZE];
-double	movave_[DATA_SIZE];
 int		temp_int_buf0[BUF_SIZE];
-char    path_[17] = "./";
+char    path_[BUF_SIZE] = "C:/ax/apnea/";
+char	tempPath_[BUF_SIZE] = { '\0' };
 
-int		len = 128;
+int		len = CalcDataNumApnea;
 int		snore_ = SNORE_OFF;		// いびき
 
 static B	SnoreTime_[RIREKI];
 static UB	SnoreFlg_; // ONカウント中 or OFFカウント中
-static UB	SnoreCnt_; // ON連続回数, OFF連続回数 兼用
+static int	SnoreCnt_; // ON連続回数, OFF連続回数 兼用
 
 /*==============================================================================*/
 /*	プロトタイプ宣言															*/
@@ -61,52 +63,57 @@ int main()
 {
 	struct tm timeptr;
 	FILE *fp;
-	double* ptest1 = NULL;
-	char folder[15] = { '\0' };
+	char folder[BUF_SIZE] = { '\0' };
+	char dataPath[BUF_SIZE] = { '\0' };
+	char str[BUF_SIZE] = { '\0' };
 	time_t timer = 0;
-	int i = 0;
+	int i, ii = 0;
 
-	ptest1 = (double*)calloc(len, sizeof(double));
-
-	if (!ptest1) {
-		return 1;
-	}
-
-	if (fopen_s(&fp, "./movave.txt", "r")) {
-		printf("ファイルを開くことが出来ませんでした。\n");
-		return 1;
-	}
-
+	//現在時刻取得
 	timer = time(NULL);
 	if (localtime_s(&timeptr, &timer))
 	{
-		fclose(fp);
 		return 1;
 	}
 
-	strftime(folder, 15, "%Y%m%d%H%M%S", &timeptr);
-
+	//現在時刻でフォルダ作成
+	strftime(folder, BUF_SIZE, "%Y%m%d%H%M%S", &timeptr);
 	if (!strcat_s(path_, sizeof path_, folder)) {
 		_mkdir(path_);
-
-		for (i = 0; i < len; i++) {
-			fscanf_s(fp, "%lf", &(movave_[i]));     /*  1行読む  */
-		}
 	}
 
-	for (int ii = 0; ii<len; ++ii) {
-		ptest1[ii] = movave_[ii] / APNEA_PARAM_RAW;
-	}
-
+	//初期化
 	calc_snore_init();
 
-	getwav_snore(ptest1, len, APNEA_PARAM_SNORE);
-	
-	double tmpsnore = (double)snore_;
-	debug_out("snore_", &tmpsnore, 1, path_);
+	//データフォルダあるだけループ
+	for (ii = 0; ii < LOOP_CNT; ii++)
+	{
+		strcpy_s(dataPath, sizeof dataPath, ".");
+		sprintf_s(str, BUF_SIZE, "/%d/", ii);
+		strcat_s(dataPath, sizeof dataPath, str);
+		strcat_s(dataPath, sizeof dataPath, "rawsnore.txt");
 
-	free(ptest1);
-	fclose(fp);
+		if (fopen_s(&fp, dataPath, "r")) {
+			printf("ファイルを開くことが出来ませんでした。\n");
+			break;
+		}
+
+		for (i = 0; i < len; i++) {
+			fscanf_s(fp, "%lf", &(raw_[i]));     /*  1行読む  */
+		}
+
+		strcpy_s(tempPath_, sizeof tempPath_, path_);
+		strcat_s(tempPath_, sizeof tempPath_, str);
+		_mkdir(tempPath_);
+
+		getwav_snore(raw_, len, APNEA_PARAM_SNORE);
+
+		double tmpsnore = (double)snore_;
+		
+		debug_out("snore_", &tmpsnore, 1, tempPath_);
+
+		fclose(fp);
+	}
 }
 
 /************************************************************************/
@@ -164,7 +171,7 @@ void getwav_snore(const double* pData, int DSize, double Param)
 			}
 		}
 	}
-	debug_out_int("snore_Thre", temp_int_buf0, loop, path_);
+	debug_out_int("snore_Thre", temp_int_buf0, loop, tempPath_);
 
 	while (pos < loop) {
 		switch (SnoreFlg_) {
