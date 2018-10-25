@@ -62,24 +62,16 @@ int main()
 {
 	struct tm timeptr;
 	FILE *fp;
-	double* ptest1 = NULL;
 	char folder[BUF_SIZE] = { '\0' };
 	char dataPath[BUF_SIZE] = { '\0' };
 	char str[BUF_SIZE] = { '\0' };
 	time_t timer = 0;
 	int i, ii = 0;
 
-	ptest1 = (double*)calloc(len, sizeof(double));
-
-	if (!ptest1) {
-		return 1;
-	}
-
 	//åªç›éûçèéÊìæ
 	timer = time(NULL);
 	if (localtime_s(&timeptr, &timer))
 	{
-		free(ptest1);
 		return 1;
 	}
 
@@ -120,7 +112,6 @@ int main()
 
 		fclose(fp);
 	}
-	free(ptest1);
 }
 
 /************************************************************************/
