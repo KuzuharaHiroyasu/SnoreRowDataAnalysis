@@ -1,4 +1,4 @@
-// ApneaRowDataAnalysis.cpp : コンソール アプリケーションのエントリ ポイントを定義します。
+// SnoreRowDataAnalysis.cpp : コンソール アプリケーションのエントリ ポイントを定義します。
 //
 
 #include	"stdafx.h"
