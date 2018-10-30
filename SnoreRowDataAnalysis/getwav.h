@@ -25,12 +25,6 @@
 #define SNORE_PARAM_SIZE	(10)
 #define SNORE_PARAM_THRE	(256)
 
-// –³ŒÄ‹z”»’èŒ‹‰Ê
-#define APNEA_NORMAL	0	// ˆÙí‚È‚µ
-#define APNEA_WARN		1	// –³ŒÄ‹z‹æŠÔ‚ ‚è
-#define APNEA_ERROR		2	// Š®‘S–³ŒÄ‹z
-#define APNEA_NONE		3	// ”»’èƒGƒ‰[
-
 // ‚¢‚Ñ‚«”»’èŒ‹‰Ê
 #define SNORE_OFF		0	// ‚¢‚Ñ‚«‚È‚µ
 #define SNORE_ON		1	// ‚¢‚Ñ‚«‚ ‚è
