@@ -11,12 +11,6 @@
 #include	"getwav.h"
 #include	"apnea_param.h"
 
-#ifdef __cplusplus
-#define DLLEXPORT extern "C" __declspec(dllexport)
-#else
-#define DLLEXPORT __declspec(dllexport)
-#endif
-
 /*==============================================================================*/
 /*	define’è‹`																	*/
 /*==============================================================================*/
